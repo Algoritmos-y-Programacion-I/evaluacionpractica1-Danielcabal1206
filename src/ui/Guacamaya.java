@@ -7,7 +7,7 @@ public class Guacamaya {
     public static Scanner reader;
     public static double[] precios;
     public static int[] unidades;
-
+    public static int [] vendidos;
     public static void main(String[] args) {
 
         inicializarGlobales();
@@ -97,35 +97,123 @@ public class Guacamaya {
 
         precios = new double[referencias];
         unidades = new int[referencias];
-
+        vendidos= new int[referencias];
     }
+    /**
+     * En este metodo se establece la solicitud inicial de los datos
+     * como lo son:
+     * pre: El precio no puede tener un valor que sea de 0 o inferior
+     * pre: Las unidades de un producto no pueden ser 0 
+     * pos: Los arreglos de precio y unidad ahora almacenan esos datos
+     */
 
     public static void solicitarDatos(){
+        System.out.println("Es momento de que ingreses el precio de los productos");
+        double precio;
+        for(int i=0 ;i<precios.length;i++){
+            System.out.println("Ingrese el precio del producto numero"+" "+(i+1));
+            while (true) {
+                precio=reader.nextDouble();
+                if(precio<0){
+                    System.out.println("El precio no puede se de 0");
+                }else{
+                    precios[i]=precio;
+                    break;
+                }
+            }
+            System.out.println("Ahora ingrese la cantidad existente de este producto");
+            int unidadesProducto;
+            while(true){
+                unidadesProducto=reader.nextInt();
+                if(unidadesProducto<1){
+                    System.out.println("No se puede ingresar una cantidad menor a 1");
+                }else{
+                    unidades[i]=unidadesProducto;
+                    break;
+                }
+            }
+            
+
+            
+
+        }
+       
 
      
     }
-
+    /**
+     * Este metodo se encarga de dar el total de unidades vendidas TOTALES de todas las referencias de producto
+     * Utiliza el arreglo uUNIDADES para conocer la extension de todos los productos para los cuales debe acumular
+     * @return venta
+     */
     public static int calcularTotalUnidadesVendidas(){
-
-        return 0;
+        solicitarDatos();
+        int venta;
+        venta=0;
+        for(int i=0;i<unidades.length;i++){
+            System.out.println("Cuantos productos se vendieron del producto" + (i+1));
+            while(true){
+                venta+=reader.nextInt();
+                if(venta<1){
+                    System.out.println("Si no has vendido no es necesario modificar");
+                }else{
+                    vendidos[i]=venta;
+                    break;
+                }
+            }
+        }
+        return venta;
 
     }
-
+    /**
+     * Este metodo permite calcular el costo aproximado de media de los articulos de esta tienda
+     * @return promedio El promedio del precio de los productos vendidos en ese dia 
+     */
     public static double calcularPrecioPromedio(){
-
-        return 0;
+        solicitarDatos();
+        double sumaPro=0.0;
+        double promedio;
+        for(int i=0;i<precios.length;i++){
+            sumaPro+=precios[i];
+        }
+        promedio=sumaPro/(precios.length);
+        
+        return promedio;
 
     }
 
+    /**
+     * pre:Tener los precios definidos 
+     * pre:El arreglo de vendidos debe estar lleno
+     * @return total Es el total de ventas en efectivo de todo lo vendido en el dia
+     */
     public static double calcularVentasTotales(){
-
-        return 0;
+        solicitarDatos();
+        double total=0;
+        for(int i=0;i<vendidos.length;i++){
+            total+=vendidos[i]*precios[i];
+        }
+        return total;
 
     }
+    /**
+     * pre:se debe tener los datos basicos de los productos
+     * ejemplo: su precio y su cantidad
+     *
+     * @param limite numero que ingresa el usuario definiendo el minimo de dinero que debe haber generado un producto
+     * @return sobreLimite un numero que indica cuantos productos superaron ese minimo de ventas
+     */
 
     public static int consultarReferenciasSobreLimite(double limite){
-
-        return 0;
+        solicitarDatos();
+        calcularTotalUnidadesVendidas();
+        int sobreLimite=0;
+        for(int i=0;i<precios.length;i++){
+            if((vendidos[i]*precios[i])>limite){
+                sobreLimite+=1;
+            }
+        }
+        return sobreLimite;
 
     }
 
